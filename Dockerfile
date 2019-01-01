@@ -8,7 +8,8 @@ ARG registry
 
 ADD . /usr/src/app
 
-RUN yarn install --production
+#RUN yarn install --production
+RUN yarn install
 RUN yarn global add nodemon
 
 RUN chmod +x /usr/src/app/init
