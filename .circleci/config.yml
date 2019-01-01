@@ -11,10 +11,15 @@ workflows:
             branches:
               only:
                 - master
+      - lint:
+          requires:
+            - base-install
+            - build
       - tag:
           requires:
             - base-install
             - build
+            - lint
           filters:
             branches:
               only:
@@ -47,6 +52,18 @@ jobs:
       - run:
           name: Build Docker Container
           command: docker-compose build
+
+  lint:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/code
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/code
+      - run:
+          name: Lint source
+          command: yarn lint
 
   tag:
     docker:
