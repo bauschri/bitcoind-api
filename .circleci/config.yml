@@ -11,6 +11,15 @@ workflows:
             branches:
               only:
                 - master
+      - start:
+          requires:
+            - base-install
+            - build
+          filters:
+            branches:
+              only:
+                - master
+
 jobs:
   base-install:
     docker:
@@ -38,3 +47,15 @@ jobs:
       - run:
           name: Build Docker Container
           command: docker-compose build
+
+  start:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/code
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Start Docker Container
+          command: docker-compose up -d
