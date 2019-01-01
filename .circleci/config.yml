@@ -4,17 +4,9 @@ workflows:
   build_test_deploy:
     jobs:
       - base-install
-      - build-docker-images:
+      - build:
           requires:
             - base-install
-          filters:
-            branches:
-              only:
-                - master
-      - download-and-build:
-          requires:
-            - base-install
-            - build-docker-images
           filters:
             branches:
               only:
@@ -28,14 +20,6 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-
-  build-docker-images:
-    docker:
-      - image: circleci/node:8
-    working_directory: ~/code
-    steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run:
           name: Install Docker Compose
           command: |
@@ -43,7 +27,7 @@ jobs:
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
-  download-and-build:
+  build:
     docker:
       - image: circleci/node:8
     working_directory: ~/code
@@ -52,5 +36,5 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Install dependencies
-          command: bash install.sh
+          name: Build Docker Container
+          command: docker-compose build
