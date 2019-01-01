@@ -82,7 +82,7 @@ jobs:
             PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
             echo 'export PACKAGE_VERSION=$PACKAGE_VERSION' >> $BASH_ENV
             source $BASH_ENV
-            curl -X POST --data-urlencode "payload={\"channel\": \"#$SLACK_CHANNEL\", \"username\": \"webhookbot\", \"text\": \"push ($CIRCLE_PROJECT_REPONAME/$PACKAGE_VERSION.$CIRCLE_BUILD_NUM]) tag=latest\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
+            curl -X POST --data-urlencode "payload={\"channel\": \"#$SLACK_CHANNEL\", \"username\": \"webhookbot\", \"text\": \"push ($CIRCLE_PROJECT_REPONAME/$PACKAGE_VERSION.$CIRCLE_BUILD_NUM]) tag=latest to hub.docker.com.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
 
   tag:
     docker:
