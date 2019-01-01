@@ -48,7 +48,7 @@ jobs:
           name: Build Docker Container
           command: docker-compose build
 
-  start:
+  tag:
     docker:
       - image: circleci/node:8
     working_directory: ~/code
@@ -58,4 +58,8 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Start Docker Container
-          command: docker-compose up -d
+          command: |
+            DOCKER_ID=`docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1`
+            docker commit $DOCKER_ID bitcoind-api-be
+            docker tag bitcoind-api-be cbaus/bitcoind-api-be
+            docker push cbaus/bitcoind-api-be
