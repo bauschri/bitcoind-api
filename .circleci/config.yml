@@ -90,13 +90,13 @@ jobs:
       - image: circleci/node:8
     working_directory: ~/code
     steps:
-      - checkout
+      - *restore_workspace
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
           name: Start Docker Container
           command: |
-            docker-compose build
+            curl -X POST --data-urlencode "payload={\"channel\": \"#excluserv_general\", \"username\": \"webhookbot\", \"text\": \"New Docker-Image [] pushed to remote.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
             #DOCKER_ID=`docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1`
             echo "DOCKER" + $DOCKER_LOGIN
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
