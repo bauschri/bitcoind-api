@@ -14,7 +14,9 @@
     "sequelize": "^4.42.0",
     "sequelize-cli": "^5.4.0",
     "socket.io": "^2.2.0",
-    "walk-sync": "^1.0.1",
+    "walk-sync": "^1.0.1"
+  },
+  "devDependencies": {
     "eslint": "^5.10.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -22,9 +24,6 @@
     "eslint-plugin-no-only-tests": "^2.1.0",
     "husky": "1.2.1",
     "lint-staged": "^8.1.0"
-  },
-  "devDependencies": {
-
   },
   "scripts": {
     "migrate": "BABEL_ENV=${NODE_ENV} ./node_modules/sequelize-cli/lib/sequelize db:migrate",
