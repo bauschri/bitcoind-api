@@ -1,4 +1,6 @@
 {
+  "name": "bitcoind-api",
+  "version": "0.1",
   "dependencies": {
     "axios": "^0.18.0",
     "epilogue": "^0.7.1",

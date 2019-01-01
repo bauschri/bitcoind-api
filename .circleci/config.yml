@@ -20,13 +20,6 @@ workflows:
   build_test_deploy:
     jobs:
       - base-install
-      - build:
-          requires:
-            - base-install
-          filters:
-            branches:
-              only:
-                - master
       - lint:
           requires:
             - base-install
@@ -34,7 +27,6 @@ workflows:
       - tag:
           requires:
             - base-install
-            - build
             - lint
           filters:
             branches:
@@ -43,7 +35,6 @@ workflows:
       - slack_info:
           requires:
             - base-install
-            - build
             - lint
             - tag
           filters:
@@ -71,18 +62,6 @@ jobs:
           command: yarn install
       - *save_workspace
 
-  build:
-    docker:
-      - image: circleci/node:8
-    working_directory: ~/code
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Build Docker Container
-          command: docker-compose build
-
   lint:
     docker:
       - image: circleci/node:8
@@ -106,7 +85,7 @@ jobs:
       - run:
           name: Inform Slack-Channel
           command: |
-            curl -X POST --data-urlencode "payload={\"channel\": \"#excluserv_general\", \"username\": \"webhookbot\", \"text\": \"New Docker-Image [] pushed to remote.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
+            curl -X POST --data-urlencode "payload={\"channel\": \"#excluserv_general\", \"username\": \"webhookbot\", \"text\": \"New Docker-Image [$CIRCLE_BUILD_NUM] pushed to remote.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
   tag:
     docker:
       - image: circleci/node:8
@@ -119,6 +98,7 @@ jobs:
           name: Start Docker Container
           command: |
             echo "DOCKER CIRCLE_BUILD_NUM=" + $CIRCLE_BUILD_NUM
+            echo "CIRCLE_BRANCH="+$CIRCLE_BRANCH
             docker build -t cbaus/bitcoind-api-be:0.1.$CIRCLE_BUILD_NUM .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             #docker commit `docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1` bitcoind-api-be
