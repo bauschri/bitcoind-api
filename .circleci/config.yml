@@ -40,6 +40,16 @@ workflows:
             branches:
               only:
                 - master
+      - slack_info:
+          requires:
+            - base-install
+            - build
+            - lint
+            - tag
+          filters:
+            branches:
+              only:
+                - master
 
 jobs:
   base-install:
@@ -84,7 +94,18 @@ jobs:
       - run:
           name: Lint source
           command: yarn lint
-
+  slack_info:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/code
+    steps:
+      - *restore_workspace
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Inform Slack-Channel
+          command: |
+            curl -X POST --data-urlencode "payload={\"channel\": \"#excluserv_general\", \"username\": \"webhookbot\", \"text\": \"New Docker-Image [] pushed to remote.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
   tag:
     docker:
       - image: circleci/node:8
@@ -96,7 +117,6 @@ jobs:
       - run:
           name: Start Docker Container
           command: |
-            curl -X POST --data-urlencode "payload={\"channel\": \"#excluserv_general\", \"username\": \"webhookbot\", \"text\": \"New Docker-Image [] pushed to remote.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
             #DOCKER_ID=`docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1`
             echo "DOCKER" + $DOCKER_LOGIN
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
