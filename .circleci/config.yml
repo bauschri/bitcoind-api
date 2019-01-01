@@ -117,9 +117,9 @@ jobs:
       - run:
           name: Start Docker Container
           command: |
-            #DOCKER_ID=`docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1`
-            echo "DOCKER" + $DOCKER_LOGIN
+            DOCKER_ID=`docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1`
+            echo "DOCKER" + $DOCKER_LOGIN + " " + $DOCKER_ID
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-            #docker commit $DOCKER_ID bitcoind-api-be
+            docker commit $DOCKER_ID bitcoind-api-be
             docker tag bitcoind-api-be cbaus/bitcoind-api-be
             docker push cbaus/bitcoind-api-be
