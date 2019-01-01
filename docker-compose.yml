@@ -12,3 +12,6 @@ services:
       - "3000:4001"
     networks:
       - bitcoind
+
+networks:
+  bitcoind:
