@@ -1,7 +1,7 @@
 const walkSync = require('walk-sync');
 const epilogue = require('epilogue');
 
-//const log = require('../utils/logger');
+// const log = require('../utils/logger');
 
 function epilogueErrorHandler(req, res, err) {
   console.log(`[epilogue-error] status=${err.status} message=${err.message}`, {

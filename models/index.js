@@ -3,26 +3,26 @@ const Sequelize = require('sequelize');
 
 let db;
 const walkSync = require('walk-sync');
-//const logger = require('../utils/logger');
+// const logger = require('../utils/logger');
 
-const LOG_SQL_THRESHOLD_IN_MS = process.env.LOG_SQL_THRESHOLD_IN_MS || 1000;
+// const LOG_SQL_THRESHOLD_IN_MS = process.env.LOG_SQL_THRESHOLD_IN_MS || 1000;
 
-function sequelizeLogFunction(query, duration) {
-  //const logMethod =
-  //  duration >= LOG_SQL_THRESHOLD_IN_MS ? logger.warn : logger.debug;
-  //logMethod({ message: query, duration });
-}
+// function sequelizeLogFunction(query, duration) {
+// const logMethod =
+//  duration >= LOG_SQL_THRESHOLD_IN_MS ? logger.warn : logger.debug;
+// logMethod({ message: query, duration });
+// }
 
-const initializeDB = config => {
+const initializeDB = (config) => {
   if (db) {
     return db;
   }
   db = {};
   const configDefault = {
     dialect: 'postgres',
-    logging: sequelizeLogFunction,
+    // logging: sequelizeLogFunction,
     dialectOptions: {
-      supportBigNumbers: true
+      supportBigNumbers: true,
     },
     pool: {
       maxConnections: 5,
@@ -51,18 +51,18 @@ const initializeDB = config => {
       console.log(`   username = ${sequelize.config.username}`);
       console.log(`   database = ${sequelize.config.database}`);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error('Unable to connect to the database:', err);
     });
 
   walkSync(__dirname, {
     globs: ['**/*.sequelize.js'],
-  }).forEach(file => {
+  }).forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 
-  Object.keys(db).forEach(modelName => {
+  Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {
       db[modelName].associate(db);
     }

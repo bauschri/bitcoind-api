@@ -1,5 +1,4 @@
-
-const route = ({ db, epilogue, epilogueResources }) => {
+const route = ({ db, epilogue }) => {
   const resource = epilogue.resource({
     model: db.Block,
     endpoints: ['/block', '/block/:id'],

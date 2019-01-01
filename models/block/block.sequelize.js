@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Block = sequelize.define('Block', {
     block_id: {
@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     freezeTableName: true,
     tableName: 'block',
-    hooks: {
+    /* hooks: {
       async beforeCreate(refund) {
 
       },
@@ -99,12 +99,12 @@ module.exports = (sequelize, DataTypes) => {
       async afterDestroy(refund) {
 
       },
-    },
+    }, */
 
   });
 
-  Block.associate = function(models) {
+  /* Block.associate = function (models) {
 
-  };
+  }; */
   return Block;
 };

@@ -1,0 +1,9 @@
+node_modules/
+sga_app/node_modules/
+sga_app/coverage/
+sga_app/build/
+
+# temporary disabled folders
+sga_app/client/
+sga_app/config/
+sga_app/test/
