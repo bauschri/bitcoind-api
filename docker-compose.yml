@@ -1,8 +1,8 @@
 version: '2'
 services:
-  
+
   bitcoind-api-be:
-    image: bitcoin-api-be:latest
+    image: bitcoind-api-be:latest
     build:
       context: .
       dockerfile: $PWD/Dockerfile
