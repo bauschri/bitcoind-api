@@ -6,9 +6,10 @@ WORKDIR /usr/src/app
 COPY ./package.json /usr/src/app/
 ARG registry
 
-ADD ./ /usr/src/app
+ADD . /usr/src/app
+
 RUN yarn install --production
-RUN npm install -g nodemon
+RUN yarn global add nodemon
 
 EXPOSE 8181
 

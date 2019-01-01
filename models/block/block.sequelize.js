@@ -96,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
       async afterUpdate(refund) {
 
       },
-      async afterDelete(refund) {
+      async afterDestroy(refund) {
 
       },
     },
