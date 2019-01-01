@@ -28,8 +28,8 @@
   "scripts": {
     "migrate": "BABEL_ENV=${NODE_ENV} ./node_modules/sequelize-cli/lib/sequelize db:migrate",
     "migrate:undo": "BABEL_ENV=${NODE_ENV} ./node_modules/sequelize-cli/bin/sequelize db:migrate:undo",
-    "lint": "eslint ./ --ext .js --ext .json --color --ignore-pattern ./node_modules",
-    "lint:fix": "eslint --fix ./ --ext .js --ext .json --ignore-pattern ./node_modules"
+    "lint": "./node_modules/eslint/bin/eslint.js ./ --ext .js --ext .json --color --ignore-pattern ./node_modules",
+    "lint:fix": "./node_modules/eslint/bin/eslint.js --fix ./ --ext .js --ext .json --ignore-pattern ./node_modules"
   },
   "husky": {
     "hooks": {
