@@ -16,3 +16,4 @@ services:
 
 networks:
   bitcoind:
+    external: true

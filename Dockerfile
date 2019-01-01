@@ -11,7 +11,9 @@ ADD . /usr/src/app
 RUN yarn install --production
 RUN yarn global add nodemon
 
+RUN chmod +x /usr/src/app/init
+
 EXPOSE 8181
 
 # Start the app
-CMD /usr/src/app/init
+CMD bash /usr/src/app/init

@@ -18,6 +18,24 @@
   },
   "scripts": {
     "migrate": "BABEL_ENV=${NODE_ENV} ./node_modules/sequelize-cli/lib/sequelize db:migrate",
-    "migrate:undo": "BABEL_ENV=${NODE_ENV} ./node_modules/sequelize-cli/bin/sequelize db:migrate:undo"
+    "migrate:undo": "BABEL_ENV=${NODE_ENV} ./node_modules/sequelize-cli/bin/sequelize db:migrate:undo",
+    "lint": "eslint ./ --ext .js --ext .json --color --ignore-pattern ./node_modules",
+    "lint:fix": "eslint --fix ./ --ext .js --ext .json --ignore-pattern ./node_modules"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "sga_app/**/*.{js,json}": [
+        "eslint --fix",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "sga_app/package.json"
+    ]
   }
 }
