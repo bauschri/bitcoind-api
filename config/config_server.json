@@ -1,0 +1,14 @@
+{
+  "development": {
+    "db": {
+      "port": 5432,
+      "username": "postgres",
+      "password": "postgres",
+      "database": "postgres",
+      "host": "127.0.0.1"
+    },
+    "quandlApiKey": ""
+  },
+  "staging": {},
+  "production": {}
+}
