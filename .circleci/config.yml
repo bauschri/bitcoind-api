@@ -39,5 +39,3 @@ jobs:
       - run:
           name: Build Docker Container
           command: docker-compose build
-          requires:
-            - base-install
