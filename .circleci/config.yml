@@ -1,3 +1,19 @@
+# Download cached workspace
+restore_workspace: &restore_workspace
+  attach_workspace:
+    # Must be absolute path or relative path from working_directory
+    at: .
+
+# Save all actual files
+save_workspace: &save_workspace
+  persist_to_workspace:
+    # Must be relative path from working_directory
+    root: .
+    # Must be relative path from root
+    paths:
+      - .
+
+
 version: 2
 workflows:
   version: 2
@@ -43,6 +59,7 @@ jobs:
       - run:
           name: Install Node Dependencies
           command: yarn install
+      - *save_workspace
 
   build:
     docker:
@@ -61,7 +78,7 @@ jobs:
       - image: circleci/node:8
     working_directory: ~/code
     steps:
-      - checkout
+      - *restore_workspace
       - attach_workspace:
           at: ~/code
       - run:
