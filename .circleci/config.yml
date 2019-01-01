@@ -23,7 +23,6 @@ workflows:
       - lint:
           requires:
             - base-install
-            - build
       - tag:
           requires:
             - base-install
