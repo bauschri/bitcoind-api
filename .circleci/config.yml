@@ -1,18 +1,13 @@
-# Download cached workspace
+
 restore_workspace: &restore_workspace
   attach_workspace:
-    # Must be absolute path or relative path from working_directory
     at: .
 
-# Save all actual files
 save_workspace: &save_workspace
   persist_to_workspace:
-    # Must be relative path from working_directory
     root: .
-    # Must be relative path from root
     paths:
       - .
-
 
 version: 2
 workflows:
@@ -96,8 +91,11 @@ jobs:
       - run:
           name: Start Docker Container
           command: |
-            echo "DOCKER CIRCLE_BUILD_NUM=" + $CIRCLE_BUILD_NUM
-            echo "CIRCLE_BRANCH="+$CIRCLE_BRANCH
+            echo "CIRCLE_BUILD_NUM="$CIRCLE_BUILD_NUM
+            echo "CIRCLE_BRANCH="$CIRCLE_BRANCH
+            echo "CIRCLE_BUILD_NUM="$CIRCLE_BUILD_NUM
+            echo "CIRCLE_BUILD_NUM"$CIRCLE_BUILD_NUM
+            echo "VERSION="$VERSION
             docker build -t cbaus/bitcoind-api-be:0.1.$CIRCLE_BUILD_NUM .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             #docker commit `docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1` bitcoind-api-be
