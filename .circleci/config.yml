@@ -11,7 +11,7 @@ workflows:
             branches:
               only:
                 - master
-      - start:
+      - tag:
           requires:
             - base-install
             - build
