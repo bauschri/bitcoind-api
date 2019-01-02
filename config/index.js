@@ -12,6 +12,5 @@ config.db.password = process.env.DB_PASSWORD || enc.DB_PASSWORD || config.db.pas
 config.quandlApiKey = process.env.QUANDL_API_KEY || enc.QUANDL_API_KEY || config.quandlApiKey;
 
 config = Object.freeze(config);
-console.log('config', config);
 
 module.exports = config;
