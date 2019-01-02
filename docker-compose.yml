@@ -2,16 +2,18 @@ version: '2'
 services:
 
   bitcoind-api-be:
-    image: cbaus/bitcoind-api-be:latest
+    image: bitcoind-api-be:latest
+    build:
+      context: .
+      dockerfile: $PWD/Dockerfile
     environment:
-      - DB_HOST=database-internal
-      - DB_PORT=5432
+      - APP_SECRET=9oPWfwjAhsdUyJoMHLUK9l0hjJgyvhlu7
     ports:
       - "3000:4001"
     networks:
       - bitcoind
-#    volumes:
-#      - .:/usr/src/app
+    volumes:
+      - .:/usr/src/app
 
 networks:
   bitcoind:

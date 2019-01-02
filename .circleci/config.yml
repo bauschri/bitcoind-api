@@ -18,10 +18,15 @@ workflows:
       - lint:
           requires:
             - base-install
+      - test:
+          requires:
+            - base-install
+            - lint
       - deploy:
           requires:
             - base-install
             - lint
+            - test
           filters:
             branches:
               only:
@@ -30,6 +35,7 @@ workflows:
           requires:
             - base-install
             - lint
+            - test
             - deploy
           filters:
             branches:
@@ -86,6 +92,17 @@ jobs:
             echo 'export PACKAGE_VERSION=$PACKAGE_VERSION' >> $BASH_ENV
             source $BASH_ENV
             curl -X POST --data-urlencode "payload={\"channel\": \"#$SLACK_CHANNEL\", \"username\": \"webhookbot\", \"text\": \"push ($CIRCLE_PROJECT_REPONAME/$PACKAGE_VERSION.$CIRCLE_BUILD_NUM]) tag=latest to hub.docker.com.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
+
+  test:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/code
+    steps:
+      - *restore_workspace
+      - run:
+          name: test
+          command: |
+            ENV=${CIRCLE_BRANCH} make test
 
   deploy:
     docker:

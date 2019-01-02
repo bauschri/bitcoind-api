@@ -1,5 +1,17 @@
 {
+  "test": {
+    "LOG_LEVEL": "debug",
+    "db": {
+      "port": 5432,
+      "username": "postgres",
+      "password": "postgres",
+      "database": "postgres",
+      "host": "database-internal"
+    },
+    "quandlApiKey": ""
+  },
   "development": {
+    "LOG_LEVEL": "debug",
     "db": {
       "port": 5432,
       "username": "postgres",

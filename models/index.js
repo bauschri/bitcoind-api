@@ -1,8 +1,10 @@
 const path = require('path');
 const Sequelize = require('sequelize');
+const walkSync = require('walk-sync');
+
+const logger = require('../utils/logger');
 
 let db;
-const walkSync = require('walk-sync');
 // const logger = require('../utils/logger');
 
 // const LOG_SQL_THRESHOLD_IN_MS = process.env.LOG_SQL_THRESHOLD_IN_MS || 1000;
@@ -24,10 +26,6 @@ const initializeDB = (config) => {
     dialectOptions: {
       supportBigNumbers: true,
     },
-    pool: {
-      maxConnections: 5,
-      maxIdleTime: 30,
-    },
     define: {
       underscored: true,
       underscoredAll: true,
@@ -46,13 +44,10 @@ const initializeDB = (config) => {
   sequelize
     .authenticate()
     .then(() => {
-      console.log('Connection has been established successfully.');
-      console.log(`   host     = ${sequelize.config.host}`);
-      console.log(`   username = ${sequelize.config.username}`);
-      console.log(`   database = ${sequelize.config.database}`);
+      logger.debug('DB-Connection established successfully. Host=%s User=%s', sequelize.config.host, sequelize.config.username);
     })
     .catch((err) => {
-      console.error('Unable to connect to the database:', err);
+      logger.error('Unable to connect to the database:', err);
     });
 
   walkSync(__dirname, {
@@ -80,6 +75,7 @@ module.exports = {
   closeConnections: async () => {
     if (db) {
       await db.sequelize.connectionManager.close();
+      await db.sequelize.connectionManager.pool.clear();
     }
   },
 };

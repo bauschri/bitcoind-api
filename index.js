@@ -1,29 +1,10 @@
-const express = require('express');
-const http = require('http');
-const socketIO = require('socket.io');
-const port = 8181;
-const config = require('./config');
-const app = express();
-const server = http.createServer(app);
-const io = socketIO(server);
+const { app } = require('./app');
+const logger = require('./utils/logger');
+const { config } = require('./config/index');
+const SERVICE_PORT = 8181;
 
-
-const db = require('./models').initializeDB(config);
-
-// require('./worker/index')({io})
-require('./models/resources')({ app, config, db });
-
-app.get('/test', (req, res) => {
-  io.sockets.emit('change color', 'triggered');
-  res.status(200).json({});
+const server = app.listen(SERVICE_PORT, () => {
+  const host = server.address().address;
+  const { port } = server.address();
+  logger.info('BITCOIND-API server (%s) listening at http://%s:%s ', config.environment, host, port);
 });
-
-io.on('connection', (socket) => {
-  // console.log('User connected', socket.id);
-
-  socket.on('disconnect', () => {
-    // console.log('user disconnected');
-  });
-});
-
-server.listen(port, () => console.log(`Listening on port ${port}`));
