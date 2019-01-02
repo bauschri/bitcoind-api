@@ -30,7 +30,7 @@ workflows:
           requires:
             - base-install
             - lint
-            - deploys
+            - deploy
           filters:
             branches:
               only:
