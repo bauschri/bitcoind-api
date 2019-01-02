@@ -18,7 +18,7 @@ workflows:
       - lint:
           requires:
             - base-install
-      - tag:
+      - deploy:
           requires:
             - base-install
             - lint
@@ -30,7 +30,7 @@ workflows:
           requires:
             - base-install
             - lint
-            - tag
+            - deploys
           filters:
             branches:
               only:
@@ -51,8 +51,11 @@ jobs:
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      - restore_cache:
+          keys:
+            - v3-dependencies-{{ checksum "yarn.lock" }}
       - run:
-          name: Install Node Dependencies
+          name: Install dependencies
           command: yarn install
       - *save_workspace
 
@@ -84,7 +87,7 @@ jobs:
             source $BASH_ENV
             curl -X POST --data-urlencode "payload={\"channel\": \"#$SLACK_CHANNEL\", \"username\": \"webhookbot\", \"text\": \"push ($CIRCLE_PROJECT_REPONAME/$PACKAGE_VERSION.$CIRCLE_BUILD_NUM]) tag=latest to hub.docker.com.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/$SLACK_KEY
 
-  tag:
+  deploy:
     docker:
       - image: circleci/node:8
     working_directory: ~/code
@@ -93,22 +96,10 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Start Docker Container
+          name: Deploy Docker Container
           command: |
-            PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
-            echo 'export PACKAGE_VERSION=$PACKAGE_VERSION' >> $BASH_ENV
-            source $BASH_ENV
-            echo "PACKAGE_VERSION="+$PACKAGE_VERSION
-            echo "CIRCLE_BUILD_NUM="+$CIRCLE_BUILD_NUM
-            echo "CIRCLE_BRANCH="+$CIRCLE_BRANCH
-            echo "CIRCLE_BUILD_NUM="+$CIRCLE_BUILD_NUM
-            echo "CIRCLE_BUILD_NUM"+$CIRCLE_BUILD_NUM
-            echo "CIRCLE_PR_REPONAME="+$CIRCLE_PR_REPONAME
-            echo "CIRCLE_PROJECT_REPONAME="+$CIRCLE_PROJECT_REPONAME
-            echo "CIRCLE_TAG="+$CIRCLE_TAG
-            docker build -t cbaus/bitcoind-api-be:$PACKAGE_VERSION.$CIRCLE_BUILD_NUM .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-            #docker commit `docker ps -a|grep 'bitcoind-api-be'|cut -d' ' -f1` bitcoind-api-be
-            docker tag cbaus/bitcoind-api-be:$PACKAGE_VERSION.$CIRCLE_BUILD_NUM cbaus/bitcoind-api-be:latest
-            docker push cbaus/bitcoind-api-be:$PACKAGE_VERSION.$CIRCLE_BUILD_NUM
-            docker push cbaus/bitcoind-api-be:latest
+      - run:
+          name: deploy
+          command: |
+            ENV=${CIRCLE_BRANCH} make deploy
