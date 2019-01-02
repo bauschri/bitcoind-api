@@ -1,0 +1,18 @@
+version: '2'
+services:
+
+  bitcoind-api-be:
+    image: bitcoind-api-be:latest
+    environment:
+      - DB_HOST=database-internal
+      - DB_PORT=5432
+    ports:
+      - "3000:4001"
+    networks:
+      - bitcoind
+    volumes:
+      - .:/usr/src/app
+
+networks:
+  bitcoind:
+    external: true

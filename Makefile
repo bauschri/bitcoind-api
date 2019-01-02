@@ -13,6 +13,8 @@ NEXT_PATCH_VERSION = $(MAJOR).$(MINOR).$(BUILD)
 build:
 	docker build --pull -f ./Dockerfile -t cbaus/bitcoind-api:bitcoind-api-be-$(NEXT_PATCH_VERSION) ./
 	docker push cbaus/bitcoind-api:bitcoind-api-be-$(NEXT_PATCH_VERSION)
+	docker tag cbaus/bitcoind-api:bitcoind-api-be-$(NEXT_PATCH_VERSION) cbaus/bitcoind-api-be:latest
+	docker push cbaus/bitcoind-api-be:latest
 
 deploy:
 	make build
