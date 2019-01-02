@@ -1,7 +1,7 @@
-// const {
-//   initializeTestFramework,
-// } = require('../../utils/test_utils');
-// // const { should } = initializeTestFramework();
+const {
+  initializeTestFramework,
+} = require('../../utils/test_utils');
+const { expect } = initializeTestFramework();
 
 describe('Block Route Tests', () => {
   beforeEach(async () => {
@@ -13,8 +13,8 @@ describe('Block Route Tests', () => {
       // const response = await authenticatedRequest.get(
       //   '/api/v1/block'
       // );
-      const response = { status: 200 };
-      response.status.should.equal(200);
+
+      expect({a: 1}).to.deep.equal({a: 1});
       // response.body.should.have.lengthOf(adhocCleaningBills.length);
       // response.body.should.containSubset(withoutTimestamps(adhocCleaningBills));
     });
