@@ -2,7 +2,7 @@ const secureEnv = require('secure-env');
 const NODE_ENV = process.env.NODE_ENV || 'development';
 let config = require('./config_server.json');
 
-const enc = secureEnv({ secret: process.env.APP_SECRET });
+const enc = secureEnv({ secret: process.env.APP_SECRET }) || {};
 
 config = Object.assign({}, config[NODE_ENV], { environment: NODE_ENV });
 
