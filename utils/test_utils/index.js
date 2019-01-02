@@ -32,7 +32,7 @@ const initializeTestFramework = () => {
   chai.use(sinonChai);
   chai.use(chaiMoment);
 
-  async function createAuthenticatedRequest({ user }) {
+  async function createAuthenticatedRequest() {
     const request = superTest(app);
     return request;
   }

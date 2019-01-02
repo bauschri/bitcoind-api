@@ -44,7 +44,8 @@ const initializeDB = (config) => {
   sequelize
     .authenticate()
     .then(() => {
-      logger.debug('DB-Connection established successfully. Host=%s User=%s', sequelize.config.host, sequelize.config.username);
+      logger.debug('DB-Connection established successfully. Host=%s User=%s',
+        sequelize.config.host, sequelize.config.username);
     })
     .catch((err) => {
       logger.error('Unable to connect to the database:', err);
