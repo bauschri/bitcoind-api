@@ -9,6 +9,7 @@ config = Object.assign({}, config[NODE_ENV], { environment: NODE_ENV });
 config.db.host = process.env.DB_HOST || enc.DB_HOST || config.db.host;
 config.db.username = process.env.DB_USERNAME || enc.DB_USERNAME || config.db.username;
 config.db.password = process.env.DB_PASSWORD || enc.DB_PASSWORD || config.db.password;
+config.db.port = process.env.DB_PORT || config.db.port;
 config.quandlApiKey = process.env.QUANDL_API_KEY || enc.QUANDL_API_KEY || config.quandlApiKey;
 
 config = Object.freeze(config);

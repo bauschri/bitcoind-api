@@ -1,7 +1,7 @@
 const { app } = require('./app');
 const logger = require('./utils/logger');
-const { config } = require('./config/index');
-const SERVICE_PORT = 8181;
+const config = require('./config/index');
+const SERVICE_PORT = 4001;
 
 const server = app.listen(SERVICE_PORT, () => {
   const host = server.address().address;
